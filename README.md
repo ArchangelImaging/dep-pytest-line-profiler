@@ -25,10 +25,18 @@ You need to prepare input data, connect to external resources, etc.  And that's 
 You can install "pytest-line-profiler" via pip from PyPI.
 
 ```
-$ pip install pytest-line-profiler
+pip install git+https://github.com/ArchangelImaging/dep-pytest-line-profiler@main
 ```
 
+Alternatively, you can add the package to your poetry project's pyproject.toml file as follows
+```
+[tool.poetry.dependencies]
+pytest-line-profiler = {git = "https://github.com/ArchangelImaging/dep-pytest-line-profiler", rev = "main"}
+```
+
+
 ## Usage
+
 
 
 Mark your test passing the functions you wants to profile as positional arguments, 
@@ -96,6 +104,27 @@ def test_as_mark():
     assert g() == 450
 
 ```
+
+## Archangel Edit -> change output units
+I have added the option to specify the output units in the decorator, e.g. 
+
+```python
+import pytest
+
+def f(i):
+    return i * 10
+
+def g(n=10):
+    return sum(f(i) for i in range(10))
+
+
+@pytest.mark.line_profile.with_args(f, g, output_unit=1e-3)
+def test_as_mark():
+    assert g() == 450
+
+```
+
+this to make the output more legible
 
 ## Contributing
 
