@@ -53,8 +53,8 @@ def pytest_runtest_call(item):
     if item.config.getvalue("line_profile"):
         instrumented += [import_string(s) for s in item.config.getvalue("line_profile")]
 
-    _kwargs = item.get_closest_marker("line_profile").kwargs
-    output_unit = _kwargs.get('output_unit', 1e-3) if _kwargs is not None else 1e-3
+    _marker = item.get_closest_marker("line_profile")
+    output_unit = _marker.kwargs.get('output_unit', 1e-3) if _marker is not None else 1e-3
 
     if instrumented:
         lp = LineProfiler(*instrumented)
